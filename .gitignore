@@ -1,0 +1,7 @@
+.config
+.env
+__pycache__
+venv
+
+poetry.lock
+.upm
