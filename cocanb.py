@@ -243,3 +243,7 @@ class Cocánb(commands.Cog):
         await ctx.send(
             'https://cocanb.fandom.com/wiki/ThCoc%C3%A1nwi_knone%C4%87_bf%C3%AEd'
         )
+
+
+async def setup(bot):
+    await bot.add_cog(Cocánb(bot))

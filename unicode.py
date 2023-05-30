@@ -198,3 +198,7 @@ class Unicode(commands.Cog):
             else:
                 ucsur += '* '
         await ctx.send(ucsur)
+
+
+async def setup(bot):
+    await bot.add_cog(Unicode(bot))

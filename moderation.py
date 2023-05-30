@@ -24,3 +24,7 @@ class Moderation(commands.Cog):
             await ctx.send(f'Banned {member.mention}')
         else:
             await ctx.send('amog us')
+
+
+async def setup(bot):
+    await bot.add_cog(Moderation(bot))

@@ -1103,11 +1103,11 @@ async def temp(ctx):
                 break
 '''
 
-async def setup(bot):
-    await bot.add_cog(Cocánb(bot))
-    await bot.add_cog(Unicode(bot))
-    await bot.add_cog(Acknowledgements(bot))
-    await bot.add_cog(Moderation(bot))
+# load cogs here
+bot.load_extension("acknowledgements")
+bot.load_extension("cocanb")
+bot.load_extension("moderation")
+bot.load_extension("unicode")
 
 try:
     bot.run(TOKEN)
