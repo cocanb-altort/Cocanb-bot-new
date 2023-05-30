@@ -32,7 +32,6 @@ guild = bot.get_guild(731109675327553567)
 
 bot.launch_time = datetime.utcnow()
 
-
 @bot.event
 async def on_member_join(member):
     if member.guild.id == 932135849838129152:

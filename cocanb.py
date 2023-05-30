@@ -4,6 +4,7 @@ from discord.ext import commands
 from Translate import toc as t
 from Translate import translator
 
+# NOTE: non-existent module
 import cocanb
 
 
