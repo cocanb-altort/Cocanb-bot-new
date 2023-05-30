@@ -1,5 +1,5 @@
-import unicodedata
 import textwrap
+import unicodedata
 
 import discord
 from discord.ext import commands

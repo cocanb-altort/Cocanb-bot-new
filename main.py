@@ -14,10 +14,10 @@ import pytz
 import neverSleep
 
 # Cogs
-from cocanb import Cocánb
-from unicode import Unicode
-from acknowledgements import Acknowledgements
-from moderation import Moderation
+# from cocanb import Cocánb
+# from unicode import Unicode
+# from acknowledgements import Acknowledgements
+# from moderation import Moderation
 
 neverSleep.awake(
     'https://' + str(os.environ['REPL_SLUG']).lower() + '.' +
@@ -26,19 +26,11 @@ neverSleep.awake(
 load_dotenv()
 TOKEN = os.getenv('TOKEN')
 
-intents = discord.Intents.default()
-intents.members = True
-
+intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="c.", intents=intents)
 guild = bot.get_guild(731109675327553567)
 
 bot.launch_time = datetime.utcnow()
-
-
-@bot.event
-async def on_ready():
-    await bot.change_presence(status=discord.Status.online,
-                              activity=discord.Game(name='c.help'))
 
 
 @bot.event
@@ -1103,11 +1095,23 @@ async def temp(ctx):
                 break
 '''
 
+
 # load cogs here
-bot.load_extension("acknowledgements")
-bot.load_extension("cocanb")
-bot.load_extension("moderation")
-bot.load_extension("unicode")
+# the name passed to load_extension should be the name of the file where the cog is located
+async def init_cogs():
+    await bot.load_extension("acknowledgements")
+    await bot.load_extension("cocanb")
+    await bot.load_extension("moderation")
+    await bot.load_extension("unicode")
+
+
+@bot.event
+async def on_ready():
+    await bot.change_presence(status=discord.Status.online,
+                              activity=discord.Game(name='c.help'))
+
+    await init_cogs()
+
 
 try:
     bot.run(TOKEN)
