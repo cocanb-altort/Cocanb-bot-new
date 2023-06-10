@@ -102,7 +102,7 @@ async def on_message(message):
             "why would you ping everyone, you're lucky that wasn't the actual ping or you would have bothered a lot of people."
         )
 
-    if "1984" in message.content and message.author.id != 801983327023398912:
+    if "1984" in message.content and (message.author.id != 801983327023398912 or message.author.id != 1012755944846938163):
         await message.channel.send("literally 1984")
 
     #if (message.guild.id == 932135849838129152 and message.author.id != 801983327023398912 and (message.content == '"' or message.content == '-' or message.content == '0' or message.content == '=' or message.content == "'" or message.content == "“" or message.content == "”" or (("'-'" in message.content or '"\n0\n=' in message.content) and "c." not in message.content))):
