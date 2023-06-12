@@ -332,7 +332,7 @@ async def msgreturn(ctx, *, msg):
              help="Sends information for Minecraft server")
 async def minecraftinfo(ctx):
     await ctx.send(
-        'SERVER INFO:\nHostname: cocanb.aternos.me:36520\nPort: 36520\n\nVersion: PaperMC 1.19.4 (Java)\nPlugins: DiscordSRV, WorldEdit\nGamemode: Creative\nDifficulty: Normal\n\n*Whitelist required, compatible with cracked accounts.'
+        'SERVER INFO:\nHostname: cocanb.aternos.me:36520\nPort: 36520\n\nVersion: PaperMC 1.20 (Java)\nPlugins: DiscordSRV, WorldEdit\nGamemode: Creative\nDifficulty: Normal\n\n*Whitelist required, compatible with cracked accounts.'
     )
 
 
