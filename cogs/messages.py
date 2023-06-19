@@ -95,10 +95,9 @@ class Messages(commands.Cog):
         if paragraph not in range(0, 233):
             await msg_dest.send(Kaczynski.contents_str)
         else:
+            random_paragraph = False
             if paragraph == 0:
                 random_paragraph = True
-            else:
-                random_paragraph = False
 
             with open("Resources/kaczynski_quotes.txt", "r") as f:
                 content = f.read()
@@ -122,7 +121,6 @@ class Messages(commands.Cog):
             #print(split_quote)
 
             for i in split_quote:
-                return
                 await msg_dest.send(i)
             # send footnotes and split them if too long
             for i in footnote_split:
@@ -225,17 +223,17 @@ class Messages(commands.Cog):
         help=
         "Sends part of Ted Kaczynski's manifesto given the paragraph number (Type 0 for a random paragraph and any number NOT within the range of 0-232 for contents)"
     )
-    async def kaczynski(self, ctx, paragraph: int):
-        self.kaczynski_single_msg(ctx, paragraph)
+    async def kaczynski(self, ctx, paragraph: int = 0):
+        await self.kaczynski_single_msg(ctx, paragraph)
 
     @commands.command(
         name="kaczynskidm",
         help=
         "Sends part of Ted Kaczynski's manifesto to someone's dm given the paragraph number (Type 0 for a random paragraph and any number NOT within the range of 0-232 for contents) (Only for admins and Cocánb Altort himself)"
     )
-    async def kaczynskidm(self, ctx, user: discord.User, paragraph: int):
+    async def kaczynskidm(self, ctx, user: discord.User, paragraph: int = 0):
         if ctx.message.author.guild_permissions.administrator or ctx.message.author.id == 607583934527569920:
-            self.kaczynski_single_msg(ctx, paragraph, user)
+            await self.kaczynski_single_msg(ctx, paragraph, user)
         else:
             await ctx.send(
                 "You do not have the permission to use this command.")
@@ -246,7 +244,7 @@ class Messages(commands.Cog):
         "Sends Ted Kaczynski's full manifesto (Can only be used by Cocánb Altort and people with administrator permissions)"
     )
     async def kaczynskifull(self, ctx):
-        self.kaczynski_full_msg(ctx)
+        await self.kaczynski_full_msg(ctx)
 
     @commands.command(
         name="kaczynskifulldm",
@@ -254,7 +252,7 @@ class Messages(commands.Cog):
         "Sends Ted Kaczynski's full manifesto to someone's dms (Can only be used by Cocánb Altort)"
     )
     async def kaczynskifulldm(self, ctx, user: discord.User):
-        self.kaczynski_full_msg(ctx, user)
+        await self.kaczynski_full_msg(ctx, user)
 
     # --------------------------------------------------------------------------------
     # Quran message commands
