@@ -1,5 +1,5 @@
+import datetime
 import asyncio
-from datetime import datetime, timedelta
 import os
 import random
 import textwrap
@@ -7,7 +7,6 @@ import textwrap
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
-import pytz
 
 import neverSleep
 
@@ -114,6 +113,7 @@ async def on_message(message):
     #await asyncio.sleep(300)
     #await message.author.remove_roles(role)
 
+    # TODO: Move Kaczynski message command to messages.py
     if (
             message.channel.id == 932896343901478963 or message.channel.id
             == 942683791753887804 or message.channel.id == 819110803612368896
@@ -159,47 +159,6 @@ async def uptime(ctx):
     minutes, seconds = divmod(remainder, 60)
     days, hours = divmod(hours, 24)
     await ctx.reply(f"Online Time: {days}d, {hours}h, {minutes}m, {seconds}s")
-
-@bot.command(
-    name='time',
-    help=
-    'Shows current time given a timezone (In (-)HH:MM format).\n\nAlternatively, type "c.time tz <tz database name>" for a region\'s time. A list of tz database names can be found here:``` https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List ```'
-)
-async def time_cmd(ctx, timezone: str = '00:00', tz_name: str = 'null'):
-
-    try:
-        if timezone == "tz":
-            utc_offset = str(
-                datetime.now(pytz.timezone(tz_name)).strftime('%z'))
-            timezone = utc_offset[:3] + ":" + utc_offset[3:]
-        else:
-            timezone = timezone
-
-        if timezone[0] == '-':
-            hours = int(timezone[:-3]) - int(timezone[-2:]) / 60
-        else:
-            hours = int(timezone[:-3]) + int(timezone[-2:]) / 60
-        future_time = datetime.today() + timedelta(hours=hours)
-        if timezone == '00:00':
-            plus = '±'
-        elif timezone[0] == '-':
-            plus = ''
-        elif timezone[0] == '+':
-            plus = ''
-        else:
-            plus = '+'
-        week_day = future_time.weekday()
-        weekdays = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
-                    "Saturday", "Sunday")
-        week_day = weekdays[week_day]
-        if timezone[-3] == ':':
-            await ctx.send('`' + week_day + ', ' + str(future_time) + ', UTC' +
-                           plus + timezone + '`')
-        else:
-            await ctx.send('invalid timezone')
-    except:
-        await ctx.send('invalid timezone')
-
 
 
 # load cogs here

@@ -18,7 +18,7 @@ class Acknowledgements(commands.Cog):
         await ctx.send('https://discord.gg/nc5xRG3xKC')
 
     @commands.command(name='bot', help='Sends a link to add this bot')
-    async def bot(self, ctx):
+    async def bot_cmd(self, ctx):
         await ctx.send(
             'https://discord.com/api/oauth2/authorize?client_id=801983327023398912&permissions=8&redirect_uri=https%3A%2F%2Fdiscord.com%2Fapi%2Foauth2%2Fauthorize%3Fclient_id%3D801983327023398912%26permissions%3D8%26redirect_uri%3Dhttps%253A%252F%252Fdiscord.com%252Fapi%252Foauth2%252Fauthorize%253Fclient_id%253D801983&scope=bot'
         )
