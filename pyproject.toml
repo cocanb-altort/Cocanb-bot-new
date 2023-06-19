@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "cocanb-bot"
 version = "0.1.0"
-description = ""
+description = "A multipurpose bot created by Cocánb Altort for the new math elitism group (a.k.a. thCocáne m'pírno nèc bfèf) discord server and many others."
 authors = ["Cocánb Altort"]
 
 [tool.poetry.dependencies]
