@@ -329,7 +329,7 @@ async def msgreturn(ctx, *, msg):
 
 
 @bot.command(name='minecraftinfo',
-             help="Sends information for Minecraft server")
+             help="Sends information for Minecraft server", aliases=["minecraft", "mcinfo"])
 async def minecraftinfo(ctx):
     await ctx.send(
         'SERVER INFO:\nHostname: cocanb.aternos.me:36520\nPort: 36520\n\nVersion: PaperMC 1.20.1 (Java)\nPlugins: DiscordSRV, WorldEdit\nGamemode: Creative\nDifficulty: Normal\n\n*Whitelist required, compatible with cracked accounts.'
@@ -395,8 +395,7 @@ async def customemoji(ctx, name, emoji_id, animated: str = ''):
     await ctx.send(f'<{anim}:{name}:{emoji_id}>')
 
 
-@bot.command(name='ipa',
-             help='Sends official International Phonetic Alphabet chart')
+@bot.command(name='ipa', help='Sends official International Phonetic Alphabet chart')
 async def ipa(ctx, format: str = 'pdf'):
     if format == 'pdf':
         with open("Resources/IPA charts/IPA_Kiel_2020_full.pdf", "rb") as file:
@@ -406,13 +405,14 @@ async def ipa(ctx, format: str = 'pdf'):
                     file,
                     "Official International Phonetic Alphabet Chart.pdf"))
     elif format == 'png':
-        with open("Resources/IPA charts/IPA_Kiel_2020_full-1.png",
-                  "rb") as file:
+        with open("Resources/IPA charts/IPA_Kiel_2020_full-1.png", "rb") as file:
             await ctx.send(
                 "Official International Phonetic Alphabet Chart",
                 file=discord.File(
                     file,
-                    "Official International Phonetic Alphabet Chart.png"))
+                    "Official International Phonetic Alphabet Chart.png"
+                )
+            )
     else:
         await ctx.send("Invalid format")
 
