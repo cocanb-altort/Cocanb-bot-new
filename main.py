@@ -216,7 +216,7 @@ async def init_cogs():
     ]
 
     for cog in cog_list:
-        await bot.load_extension(f"cogs/{cog_list}")
+        await bot.load_extension(f"cogs/{cog}")
 
 
 @bot.event
