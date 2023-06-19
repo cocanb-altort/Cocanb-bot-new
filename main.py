@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import asyncio
 import os
 import random
@@ -175,7 +175,7 @@ async def init_cogs():
     ]
 
     for cog in cog_list:
-        await bot.load_extension(f"cogs/{cog}")
+        await bot.load_extension(f"cogs.{cog}")
 
 
 @bot.event

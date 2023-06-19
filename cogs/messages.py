@@ -70,7 +70,6 @@ Contents:
     def single(self, paragraph: int) -> str:
         pass
 
-
     def full(self):
         pass
 
@@ -79,13 +78,15 @@ class Messages(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        
+
         self.kaczynski_full_stop = False
         self.kaczynski_full_dm_stop = False
         self.count_stop = False
 
-
-    def kaczynski_single_msg(self, ctx, paragraph, user: discord.User = None):
+    async def kaczynski_single_msg(self,
+                                   ctx,
+                                   paragraph,
+                                   user: discord.User = None):
         msg_dest = ctx
         if user:
             await ctx.send(f"Messaged <@{user.id}>.")
@@ -109,7 +110,7 @@ class Messages(commands.Cog):
             else:
                 chosen_quote = content_list[paragraph - 1]
             #print(chosen_quote)
-            
+
             # separate footnotes
             footnote_split = chosen_quote.split("�")
             chosen_quote = footnote_split[0]
@@ -121,7 +122,7 @@ class Messages(commands.Cog):
             #print(split_quote)
 
             for i in split_quote:
-                return 
+                return
                 await msg_dest.send(i)
             # send footnotes and split them if too long
             for i in footnote_split:
@@ -131,11 +132,12 @@ class Messages(commands.Cog):
                     i_newline = i.replace("␤", "\n")
                     await msg_dest.send(i_newline)
 
-    def kaczynski_full_msg(self, ctx, user: discord.User = None):
+    async def kaczynski_full_msg(self, ctx, user: discord.User = None):
         if ctx.message.author.guild_permissions.administrator or ctx.message.author.id == 607583934527569920:
             msg_dest = ctx
             if user:
-                await ctx.send(f"Messaged <@{user.id}> the Unabomber Manifesto.")
+                await ctx.send(
+                    f"Messaged <@{user.id}> the Unabomber Manifesto.")
                 msg_dest = user
                 self.kaczynski_full_dm_stop = False
             else:
@@ -174,7 +176,6 @@ class Messages(commands.Cog):
                             await msg_dest.send(i_newline)
                 else:
                     break
-
 
     @commands.command(name="return", help="Returns message")
     async def msgreturn(self, ctx, *, msg):
@@ -218,14 +219,14 @@ class Messages(commands.Cog):
     # --------------------------------------------------------------------------------
     # Kaczynski message commands
     # --------------------------------------------------------------------------------
-    
+
     @commands.command(
         name="kaczynski",
         help=
         "Sends part of Ted Kaczynski's manifesto given the paragraph number (Type 0 for a random paragraph and any number NOT within the range of 0-232 for contents)"
     )
     async def kaczynski(self, ctx, paragraph: int):
-        self.kaczynski_single_msg(ctx, paragraph);
+        self.kaczynski_single_msg(ctx, paragraph)
 
     @commands.command(
         name="kaczynskidm",
@@ -236,10 +237,8 @@ class Messages(commands.Cog):
         if ctx.message.author.guild_permissions.administrator or ctx.message.author.id == 607583934527569920:
             self.kaczynski_single_msg(ctx, paragraph, user)
         else:
-            await ctx.send("You do not have the permission to use this command.")
-
-
-    
+            await ctx.send(
+                "You do not have the permission to use this command.")
 
     @commands.command(
         name="kaczynskifull",
@@ -249,7 +248,6 @@ class Messages(commands.Cog):
     async def kaczynskifull(self, ctx):
         self.kaczynski_full_msg(ctx)
 
-
     @commands.command(
         name="kaczynskifulldm",
         help=
@@ -258,11 +256,10 @@ class Messages(commands.Cog):
     async def kaczynskifulldm(self, ctx, user: discord.User):
         self.kaczynski_full_msg(ctx, user)
 
-
     # --------------------------------------------------------------------------------
     # Quran message commands
     # --------------------------------------------------------------------------------
-    
+
     @commands.command(
         name='quran',
         help=
@@ -273,7 +270,7 @@ class Messages(commands.Cog):
         with open("Resources/quran_arabic.txt", "r") as f:
             content = f.read()
             sūrah_list = content.split("\n\n")
-        
+
         if sūrah == 0 or sūrah is None:
             sūrah = random.randint(1, 114)
             ʾāyah_list = sūrah_list[sūrah - 1].split("\n")
@@ -402,11 +399,10 @@ class Messages(commands.Cog):
                 else:
                     break
 
-
     # --------------------------------------------------------------------------------
     # Counting command
     # --------------------------------------------------------------------------------
-    
+
     @commands.command(name='count', help='Counts (start and end inclusive)')
     async def count(self, ctx, start: int, stop: int, *, step: int = 1):
         if ctx.message.author.id == 607583934527569920 or ctx.message.author.id == 509239077212782592:
@@ -420,11 +416,10 @@ class Messages(commands.Cog):
 
     stopenabled = True
 
-
     # --------------------------------------------------------------------------------
     # Toggle message commands
     # --------------------------------------------------------------------------------
-    
+
     @commands.command(
         name='stop',
         help=
