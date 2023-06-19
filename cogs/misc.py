@@ -136,15 +136,10 @@ class Misc(commands.Cog):
             #print ()
 
             weekday = (doomsday_offset + century_code + num1 + num2 + num3) % 7
-            weekdays = {
-                0: "Sunday",
-                1: "Monday",
-                2: "Tuesday",
-                3: "Wednesday",
-                4: "Thursday",
-                5: "Friday",
-                6: "Saturday"
-            }
+            weekdays = [
+                "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
+                "Friday", "Saturday"
+            ]
             weekday = weekdays[weekday]
             await ctx.send(weekday)
 
@@ -255,9 +250,9 @@ class Misc(commands.Cog):
                 await ctx.send('`' + week_day + ', ' + str(future_time) +
                                ', UTC' + plus + timezone + '`')
             else:
-                await ctx.send('invalid timezone')
+                await ctx.send('error: invalid timezone')
         except:
-            await ctx.send('invalid timezone')
+            await ctx.send('error: invalid timezone')
 
 
 async def setup(bot):
