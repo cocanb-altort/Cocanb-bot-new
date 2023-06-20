@@ -161,6 +161,10 @@ async def init_cogs():
 
 @bot.command()
 async def reload(ctx):
+    if ctx.author.id not in [607583934527569920, 448443875393273866]:
+        await ctx.send("You do not have permissions to use this command")
+        return
+
     msg = ""
     for cog in cog_list:
         try:
