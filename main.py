@@ -39,7 +39,7 @@ async def on_member_join(member):
 
     if member.guild.id == 731109675327553567:
         await bot.get_channel(731109675327553571).send(
-            f"<@!{member.id}>, welcome!\nIf you\'re here for maths help, go to <#845216463237021706> and just send the question you need help with, otherwise, we won\'t answer you."
+            f"Welcome <@!{member.id}.>"
         )
         role = discord.utils.get(member.server.roles, id="942683891200819213")
         await bot.add_roles(member, role)
