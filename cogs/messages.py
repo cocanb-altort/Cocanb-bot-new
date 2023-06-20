@@ -67,21 +67,19 @@ Contents:
         231: "FINAL NOTE"
     }
 
-    def single(self, paragraph: int) -> str:
-        pass
-
-    def full(self):
-        pass
-
 
 class Messages(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
 
-        self.kaczynski_full_stop = False
-        self.kaczynski_full_dm_stop = False
+        self.stop_enabled = True
+
         self.count_stop = False
+        self.kaczynski_full_msg_stop = False
+        self.kaczynski_full_dm_stop = False
+        self.quran_full_msg_stop = False
+        self.quran_full_dm_stop = False
 
     async def kaczynski_single_msg(self,
                                    ctx,
@@ -139,12 +137,12 @@ class Messages(commands.Cog):
                 msg_dest = user
                 self.kaczynski_full_dm_stop = False
             else:
-                self.kaczynski_full_stop = False
+                self.kaczynski_full_msg_stop = False
 
             await msg_dest.send(Kaczynski.contents_str)
 
             for i in range(1, 233):
-                if not self.kaczynski_full_stop:
+                if not self.kaczynski_full_msg_stop:
                     if Kaczynski.contents.get(i):
                         await msg_dest.send(Kaczynski.contents.get(i))
 
@@ -286,8 +284,9 @@ class Messages(commands.Cog):
             ʾāyah_list = sūrah_0.split("\n")
             ʾāyah_0 = ʾāyah_list[ʾāyah - 1]
 
-            my_file = open("Resources/quran_sūrah_names.txt", "r")
-            content_1 = my_file.read()
+            with open("Resources/quran_sūrah_names.txt", "r") as f:
+                content_1 = f.read()
+
             sūrah_name_list = content_1.split("\n")
             sūrah_name = sūrah_name_list[sūrah - 1]
 
@@ -306,8 +305,6 @@ class Messages(commands.Cog):
             await ctx.send("al-Qurʾān",
                            file=discord.File(file, "quran_arabic.txt"))
 
-    quranfullmsgstop = False
-
     @commands.command(
         name='quranfullmsg',
         help=
@@ -315,6 +312,7 @@ class Messages(commands.Cog):
     )
     async def quranfullmsg(self, ctx):
         if ctx.message.author.id == 607583934527569920 or ctx.message.author.guild_permissions.administrator:
+
             my_file = open("Resources/quran_arabic.txt", "r")
             content = my_file.read()
             ʾāyah_list = content.split("\n")
@@ -328,18 +326,15 @@ class Messages(commands.Cog):
             sūrah = 1
             #arabic_numerals = {'0': '٠', '1': '١', '2':'٢', '3':'٣', '4':'٤', '5':'٥', '6':'٦', '7':'٧', '8':'٨', '9':'٩'}
 
-            global quranfullmsgstop
-            quranfullmsgstop = False
+            self.quran_full_msg_stop = False
 
             await ctx.send("Sūrah 1 (Al-Fatihah)")
             for i in range(1, 6350):
-                if quranfullmsgstop == False:
+                if not self.quran_full_msg_stop:
                     if ʾāyah_list[i - 1] == "":
                         await ctx.send("ㅤ\nSūrah " + str(sūrah + 1) + " (" +
                                        sūrah_list[sūrah] + ")")
-                        if sūrah == 8:
-                            pass
-                        else:
+                        if sūrah != 8:
                             await ctx.send(
                                 "بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ")
                         sūrah += 1
@@ -350,8 +345,6 @@ class Messages(commands.Cog):
                         await ctx.send(ʾāyah_number + ' ' + ʾāyah)
                 else:
                     break
-
-    quranfulldmstop = False
 
     @commands.command(
         name='quranfulldm',
@@ -374,18 +367,15 @@ class Messages(commands.Cog):
             sūrah = 1
             #arabic_numerals = {'0': '٠', '1': '١', '2':'٢', '3':'٣', '4':'٤', '5':'٥', '6':'٦', '7':'٧', '8':'٨', '9':'٩'}
 
-            global quranfulldmstop
-            quranfulldmstop = False
+            self.quran_full_dm_stop = False
 
             await user.send("Sūrah 1 (Al-Fatihah)")
             for i in range(1, 6350):
-                if quranfulldmstop == False:
+                if not self.quran_full_dm_stop:
                     if ʾāyah_list[i - 1] == "":
                         await user.send("ㅤ\nSūrah " + str(sūrah + 1) + " (" +
                                         sūrah_list[sūrah] + ")")
-                        if sūrah == 8:
-                            pass
-                        else:
+                        if sūrah != 8:
                             await user.send(
                                 "بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ")
                         sūrah += 1
@@ -412,8 +402,6 @@ class Messages(commands.Cog):
                 else:
                     break
 
-    stopenabled = True
-
     # --------------------------------------------------------------------------------
     # Toggle message commands
     # --------------------------------------------------------------------------------
@@ -424,22 +412,19 @@ class Messages(commands.Cog):
         'Stops a spamming command given the command name (there might be a few second delay), works for kaczynskifull, kaczynskifulldm, quranfullmsg, count'
     )
     async def stop(self, ctx, command):
-        global stopenabled
-        if stopenabled == True:
+        if self.stop_enabled:
             if ctx.message.author.id == 607583934527569920 or ctx.message.author.id == 509239077212782592 or ctx.message.author.guild_permissions.administrator:
                 if command == 'kaczynskifull':
-                    self.kaczynski_full_stop = True
+                    self.kaczynski_full_msg_stop = True
                     await ctx.send("c.kaczynskifull stopped")
                 elif command == 'kaczynskifulldm':
                     self.kaczynski_full_dm_stop = True
                     await ctx.send("c.kaczynskidmfull stopped")
                 elif command == 'quranfullmsg':
-                    global quranfullmsgstop
-                    quranfullmsgstop = True
+                    self.quran_full_msg_stop = True
                     await ctx.send("c.quranfullmsg stopped")
                 elif command == 'quranfulldm':
-                    global quranfulldmstop
-                    quranfulldmstop = True
+                    self.quran_full_dm_stop = True
                     await ctx.send("c.quranfulldm stopped")
                 elif command == 'count':
                     self.count_stop = True
@@ -457,18 +442,17 @@ class Messages(commands.Cog):
         'Toggles between whether c.stop works or not (Only usable by Cocánb Altort)\n\nThe <stoptoggle> argument can be either \'enable\', \'disable\' or \'query\' and the command resets every time the bot is restarted.'
     )
     async def stoptoggle(self, ctx, stoptoggle):
-        global stopenabled
         if ctx.message.author.id == 607583934527569920:
             if stoptoggle == 'enable':
-                stopenabled = True
+                self.stop_enabled = True
                 await ctx.send("c.stop enabled.")
             elif stoptoggle == 'disable':
-                stopenabled = False
+                self.stop_enabled = False
                 await ctx.send("c.stop disabled.")
             elif stoptoggle == 'query':
-                if stopenabled == True:
+                if self.stop_enabled:
                     await ctx.send("c.stop is enabled.")
-                if stopenabled == False:
+                if not self.stop_enabled:
                     await ctx.send("c.stop is disabled.")
             else:
                 await ctx.send("Invalid input")
