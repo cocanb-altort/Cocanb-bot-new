@@ -74,6 +74,7 @@ async def on_message(message):
     #await message.channel.send(command)
     #await message.channel.send(query)
     #await msg.invoke(get_command(command), query=query)
+
     if message.content == "?" and message.author.id == 698865312954843216:
         await message.channel.send(
             'shut the fuck up grogu you know what we were talking about stop acting stupid'
@@ -94,53 +95,33 @@ async def on_message(message):
             "why would you ping everyone, you're lucky that wasn't the actual ping or you would have bothered a lot of people."
         )
 
-    if "1984" in message.content and (
-            message.author.id != 801983327023398912
-            and message.author.id != 1012755944846938163):
+    if "1984" in message.content and message.author.id not in [
+            801983327023398912, 1012755944846938163
+    ]:
         await message.channel.send("literally 1984")
 
-    #if (message.guild.id == 932135849838129152 and message.author.id != 801983327023398912 and (message.content == '"' or message.content == '-' or message.content == '0' or message.content == '=' or message.content == "'" or message.content == "“" or message.content == "”" or (("'-'" in message.content or '"\n0\n=' in message.content) and "c." not in message.content))):
-    #await message.delete()
-    #await message.channel.send("cringe")
-    #role = discord.utils.get(message.guild.roles, name="unbased")
-    #await message.author.add_roles(role)
-    #channel = bot.get_channel(932896343901478963)
-    #week_day = datetime.today().weekday()
-    #weekdays = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
-    #week_day = weekdays[week_day]
-    #muted_time = '`' + week_day + ', ' + str(datetime.today()) + ' UTC`'
-    #await channel.send(f"You have been muted for 5 minutes lol <@{message.author.id}>\nThe time now is {muted_time}.")
-    #await asyncio.sleep(300)
-    #await message.author.remove_roles(role)
-
     # TODO: Move Kaczynski message command to messages.py
-    if (
-            message.channel.id == 932896343901478963 or message.channel.id
-            == 942683791753887804 or message.channel.id == 819110803612368896
-    ) and message.author.id != 801983327023398912 and "c.kaczynski" not in message.content:
-        #open quote file
-        my_file = open("Resources/kaczynski_quotes.txt", "r")
-        content = my_file.read()
+    if message.channel.id in [
+            932896343901478963, 942683791753887804, 819110803612368896
+    ] and message.author.id != 801983327023398912 and "c.kaczynski" not in message.content:
+        with open("Resources/kaczynski_quotes.txt", "r") as f:
+            content = f.read()
         content_list = content.split("\n\n")
-        my_file.close()
+
         #choose random paragraph
         chosen_quote = random.choice(content_list)
-        print(chosen_quote)
         #separate footnotes
         footnote_split = chosen_quote.split("�")
         chosen_quote = footnote_split[0]
         footnote_split.pop(0)
-        print(footnote_split)
         #split message if longer than 2000 characters and send
         split_quote = textwrap.wrap(chosen_quote, 2000)
-        print(split_quote)
         await message.channel.send(f"<@{message.author.id}>")
         for i in split_quote:
             await message.channel.send(i)
         #send footnotes and split them if too long
         for i in footnote_split:
             split_footnote = textwrap.wrap(i, 2000)
-            print(split_footnote)
             for i in split_footnote:
                 i_newline = i.replace("␤", "\n")
                 await message.channel.send(i_newline)
@@ -161,21 +142,33 @@ async def uptime(ctx):
     await ctx.reply(f"Online Time: {days}d, {hours}h, {minutes}m, {seconds}s")
 
 
-# load cogs here
-# the name passed to load_extension should be the name of the file where the cog is located
-async def init_cogs():
-    cog_list = [
-        "acknowledgements",
-        "cocanb",
-        "messages",
-        "misc",
-        "moderation",
-        "unicode",
-        #"testing",
-    ]
+cog_list = [
+    "acknowledgements",
+    "cocanb",
+    "messages",
+    "misc",
+    "moderation",
+    "unicode",
+    #"testing",
+]
 
+
+async def init_cogs():
+    """ Initialize all cogs when the bot starts up """
     for cog in cog_list:
         await bot.load_extension(f"cogs.{cog}")
+
+
+@bot.command()
+async def reload(ctx):
+    msg = ""
+    for cog in cog_list:
+        try:
+            await bot.reload_extension(f"cogs.{cog}")
+            msg += f"Reloaded {cog}\n"
+        except:
+            msg += f"Failed to reload {cog}\n"
+    await ctx.send(msg)
 
 
 @bot.event
