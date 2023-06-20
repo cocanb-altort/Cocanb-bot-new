@@ -130,6 +130,7 @@ class Unicode(commands.Cog):
         for i in range(len(kulist)):
             kudict[kulist[i]] = chr(int("F1900", 16) + i)
         kudict.update({
+            '\n': '\n',
             'ali': '\U000f1904',
             '[': '\U000f1990',
             ']': '\U000f1991',
@@ -151,13 +152,20 @@ class Unicode(commands.Cog):
             'powe': '\U000f19a3'
         })
 
-        tokiponawords = tokipona.split(' ')
+        tokiponawords = []
+        tp_ln = tokipona.split('\n')
+        for ln in tp_ln:
+            res = ln.split(' ')
+            if res != ['']:
+                tokiponawords.extend(res)
+            tokiponawords.append('\n')
+
         ucsur = ''
         for i in range(len(tokiponawords)):
             if tokiponawords[i] in kudict:
                 ucsur += kudict[tokiponawords[i]]
             else:
-                ucsur += '*'
+                ucsur += '<?>'
         await ctx.send(ucsur)
 
     @commands.command(
