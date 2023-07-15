@@ -64,7 +64,7 @@ class Misc(commands.Cog):
         port = "36520"
         hostname = f"cocanb.aternos.me:{port}"
         version = "PaperMC 1.20.1 (Java)"
-        plugins = "DiscordSRV, WorldEdit"
+        plugins = "DiscordSRV, WorldEdit, SkinsRestorer"
         game_mode = "Creative"
         difficulty = "Normal"
         await ctx.send(
