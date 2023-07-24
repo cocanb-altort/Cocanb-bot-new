@@ -95,10 +95,21 @@ async def on_message(message):
             "why would you ping everyone, you're lucky that wasn't the actual ping or you would have bothered a lot of people."
         )
 
-    if "1984" in message.content and message.author.id not in [
-            801983327023398912, 1012755944846938163
-    ]:
-        await message.channel.send("literally 1984")
+    send = False
+    for i in ["1984", "lit"]:
+      if i in message.content and message.author.id not in [
+              801983327023398912, 1012755944846938163
+      ]:
+        send = True
+
+    if random.randint(0,30) == 0 and message.author.id not in [
+              801983327023398912, 1012755944846938163
+      ]:
+        send = True
+  
+
+    if send == True:
+       await message.channel.send("literally 1984")
 
     # TODO: Move Kaczynski message command to messages.py
     if message.channel.id in [
